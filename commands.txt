@@ -1,0 +1,8 @@
+1. openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+2. openssl rsa -pubout -in private_key.pem -out public_key.pem
+3. openssl req -new -key private_key.pem -out request.csr
+4. openssl req -new -nodes -newkey rsa:4096 -keyout key.pem -out cert.csr
+5. openssl x509 -req -in request.csr -signkey private_key.pem -out self_signed_certificate.crt -days 365
+6. openssl genpkey -algorithm RSA -out ca_private_key.pem -pkeyopt rsa_keygen_bits:2048
+7. openssl req -new -x509 -key ca_private_key.pem -out ca_certificate.crt -days 365
+8. openssl x509 -req -in request.csr -CA ca_certificate.crt -CAkey ca_private_key.pem -CAcreateserial -out issued_certificate.crt -days 365
